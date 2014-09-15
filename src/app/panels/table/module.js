@@ -497,8 +497,9 @@ function (angular, app, _, kbn, moment) {
         var str = '';
         if ($scope.headings) {
           var hline = '';
-          for (var hindex in array[0]) {
-            var hvalue = hindex + "";
+          for (var index in $scope.panel.fields) {
+            var colname = $scope.panel.fields[index];
+            var hvalue = colname + "";
             hline += '"' + hvalue.replace(/"/g, '""') + '",';
           }
 
@@ -508,9 +509,15 @@ function (angular, app, _, kbn, moment) {
         for (var i = 0; i < array.length; i++) {
           var line = '';
 
-          for (var index in array[i]) {
-            var value = array[i][index] + "";
-            line += '"' + value.replace(/"/g, '""') + '",';
+          for (var index in $scope.panel.fields) {
+            var colname = $scope.panel.fields[index];
+
+            if(array[i].hasOwnProperty(colname)){
+                var value = array[i][colname] + "";
+                line += '"' + value.replace(/"/g, '""') + '",';
+            }else{
+                line += '"' + '' + '",';
+            }
           }
 
           line = line.slice(0, -1);
